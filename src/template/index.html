@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home</title>
+
+    <style>
+        :root {
+            --breakpoint: 1080px;
+        }
+
+        * {
+            padding: 0;
+            margin: 0;
+            box-sizing: border-box;
+            color: white;
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+        }
+
+        body {
+            min-height: 90vh;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        header {
+            width: 100%;
+            background-color: black;
+        }
+
+        header>nav {
+            width: 100%;
+            max-width: var(--breakpoint);
+            margin: 0 auto;
+            font-size: 40px;
+            padding: 3px;
+        }
+
+        main {
+            width: 100%;
+            max-width: var(--breakpoint);
+            margin: 1rem auto;
+        }
+
+        main ul {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        main ul li {
+            display: table;
+        }
+
+        main li a {
+            height: 60px;
+            display: table-cell;
+            vertical-align: middle;
+            text-align: center;
+            font-size: 20px;
+            background-color: cadetblue;
+            width: 100%;
+            transition: all .1s ease-in-out;
+        }
+
+        main li a:hover {
+            transform: scale(1.1);
+        }
+
+        a {
+            text-decoration: none;
+        }
+
+        main li.disabled a {
+            background-color: gray;
+            cursor: no-drop;
+        }
+
+        main li.disabled a:hover {
+            transform: none;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <nav>
+            <a href="/">Home</a>
+        </nav>
+    </header>
+    <main>
+        <ul>
+            <li>
+                <a href="/currencies">Yahoo Finance - Currencies</a>
+            </li>
+            <li>
+                <a href="/quotes">Toscrape - Quotes</a>
+            </li>
+            <li class="disabled">
+                <a href="#">Other feature - Coming soon</a>
+            </li>
+        </ul>
+    </main>
+</body>
+
+</html>
