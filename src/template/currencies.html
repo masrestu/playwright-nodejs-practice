@@ -165,19 +165,18 @@
         const table = document.querySelector('#result')
         const thead = document.querySelector('thead')
         const tbody = document.querySelector('tbody')
+        let cd = null
 
         const run = async () => {
+            clearTimeout(cd)
             showLoading()
             await socket.emit('get_currencies')
         }
 
         socket.on('set_currencies', async (data) => {
-            // console.log('start rendering', new Date())
             await renderHeader(data.tableHeader)
             await renderDetail(data.tableDetail)
             hideLoading()
-            // console.log('finished rendering', new Date())
-            // console.log(data)
         })
 
         const renderHeader = (rows) => {
@@ -221,9 +220,9 @@
 
         const countdown = (s = 5) => {
             scrapBtn.innerText = `Re-scrap in ${s}s`
-            setTimeout(() => {
+            const cd = setTimeout(() => {
                 if (s === 1) {
-                    clearTimeout()
+                    clearTimeout(cd)
                     run()
                 } else {
                     countdown(s - 1)

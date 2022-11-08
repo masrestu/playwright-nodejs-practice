@@ -3,13 +3,15 @@ const playwright = require('playwright');
 class PlaywrightHelper {
     constructor() {
         this.timeout = 300000
+        this.browser = null
+        this.page = null
     }
 
     async open(url) {
         try {
             if (!this.browser) {
                 this.browser = await playwright.chromium.launch({
-                    headless: true
+                    headless: false
                 })
 
                 this.page = await this.browser.newPage()

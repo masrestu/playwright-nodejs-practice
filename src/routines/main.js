@@ -16,6 +16,7 @@ const main = (app) => {
                 io.emit('set_currencies', data)
             } catch (error) {
                 console.log(error)
+                io.emit('server_error')
             }
         })
 
@@ -23,9 +24,11 @@ const main = (app) => {
             try {
                 const helper = new QuoteHelper()
                 const data = await helper.getData()
-                // io.emit('set_quotes', [])
+                console.log('sending quote to client');
+                io.emit('set_quotes', data)
             } catch (error) {
                 console.log(error)
+                io.emit('server_error')
             }
         })
     })

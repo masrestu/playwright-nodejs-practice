@@ -120,6 +120,25 @@
         .data .quote p {
             color: #333;
         }
+
+        .data .quote p.content {
+            font-style: italic;
+            font-size: larger;
+        }
+
+        .data .quote p.author {
+            color: cadetblue;
+            font-weight: bold;
+        }
+
+        .data .quote p.tag {
+            padding: 2px 5px;
+            border-radius: 5px;
+            color: white;
+            font-size: small;
+            background-color: cadetblue;
+            width: fit-content;
+        }
     </style>
 </head>
 
@@ -138,11 +157,11 @@
             </div>
         </section>
         <section class="data">
-            <div class="quote">
-                <p class="text">Lorem ipsum dolor sit amet consectetur adipisicing elit. Magnam, sapiente.</p>
+            <article class="quote">
+                <p class="content">Lorem ipsum dolor sit amet consectetur adipisicing elit. Magnam, sapiente.</p>
                 <p class="author">Lorem, ipsum.</p>
-                <p class="tags">Lorem</p>
-            </div>
+                <p class="tag">Lorem</p>
+            </article>
         </section>
     </main>
 
@@ -151,44 +170,44 @@
         const socket = io()
         const scrapBtn = document.querySelector('button')
         const loader = document.querySelector('#loader')
+        const section = document.querySelector('.data')
+        let cd = null
 
         const run = async () => {
-            // showLoading()
+            clearTimeout(cd)
+            showLoading()
             await socket.emit('get_quotes')
         }
 
         socket.on('set_quotes', async (data) => {
-            await renderHeader(data.tableHeader)
-            await renderDetail(data.tableDetail)
+            section.innerHTML = ''
+            await renderQuote(data)
             hideLoading()
         })
 
-        const renderHeader = (rows) => {
-            thead.innerHTML = ''
-            for (const row of rows) {
-                const tr = document.createElement('tr')
-                for (const col of row) {
-                    const th = document.createElement('th')
-                    th.innerText = col
-                    tr.append(th)
-                }
-                thead.append(tr)
-            }
-            table.append(thead)
-        }
+        socket.on('server_error', async (data) => {
+            alert('Sorry, we have encountered a problem. Please try again later')
+            hideLoading()
+        })
 
-        const renderDetail = (rows) => {
-            tbody.innerHTML = ''
-            for (const row of rows) {
-                const tr = document.createElement('tr')
-                for (const col of row) {
-                    const td = document.createElement('td')
-                    td.innerText = col
-                    tr.append(td)
-                }
-                tbody.append(tr)
-            }
-            table.append(tbody)
+        const renderQuote = (quote) => {
+            const article = document.createElement('article')
+            article.classList.add('quote')
+
+            const content = document.createElement('p')
+            content.classList.add('content')
+            content.innerText = quote.content
+
+            const author = document.createElement('p')
+            author.classList.add('author')
+            author.innerText = '- ' + quote.author
+
+            const tag = document.createElement('p')
+            tag.classList.add('tag')
+            tag.innerText = quote.tag
+
+            article.append(content, author, tag)
+            section.append(article)
         }
 
         const showLoading = () => {
@@ -204,9 +223,9 @@
 
         const countdown = (s = 5) => {
             scrapBtn.innerText = `Re-scrap in ${s}s`
-            setTimeout(() => {
+            cd = setTimeout(() => {
                 if (s === 1) {
-                    clearTimeout()
+                    clearTimeout(cd)
                     run()
                 } else {
                     countdown(s - 1)
