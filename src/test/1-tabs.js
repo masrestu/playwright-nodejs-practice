@@ -11,9 +11,7 @@ const main = async () => {
     const tabList = page.locator(`//ul[contains(@class, 'resp-tabs-list')]/li`)
     const tabCount = await tabList.count()
 
-    await page.locator('//div[@class="content_bgr"]').click({
-        delay: 500
-    })
+    await page.waitForTimeout(500)
 
     for (let i = (tabCount - 1); i >= 0; i--) {
         const tab = tabList.nth(i)
@@ -30,9 +28,7 @@ const main = async () => {
         for (let j = (accordionCount - 1); j >= 0; j--) {
             await accordions.nth(j).click()
 
-            await page.locator('//div[@class="content_bgr"]').click({
-                delay: 500
-            })
+            await page.waitForTimeout(500)
         }
 
     }
